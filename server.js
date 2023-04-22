@@ -95,10 +95,28 @@ app.post('/changepass',function(req,res){
           }
         }
       );
-      user.
+      User.findOneAndRemove({ username: req.body.username }, function (err) {
+        if(err){
+          console.log(err);
+        }
+      });
     }
   });
 });
+app.get('/updatedetails',function(req,res){
+  const ui=req.body.username;
+  const n=req.body.name;
+  if(req.isAuthenticated()){
+    User.findOneAndUpdate({username:ui},{name:n},function(err){
+      if(err){
+        res.send(err);
+      }
+      else{
+        res.send("Updated")
+      }
+    })
+  }
+})
 app.listen(process.env.PORT || 3000, function () {
   console.log("304");
 });
